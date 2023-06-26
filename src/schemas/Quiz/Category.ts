@@ -27,4 +27,4 @@ const Category: mongoose.Schema<ICategory> = new mongoose.Schema<ICategory>(
   { timestamps: true }
 );
 
-module.exports = mongoose.model<ICategory>('Category',Category)
+export default mongoose.model<ICategory>('QuizCategory',Category)

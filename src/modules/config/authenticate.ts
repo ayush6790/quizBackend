@@ -7,11 +7,11 @@ import { generateError, handleErrorMessage } from "./function";
 dotenv.config();
 
 const authenticate = async (req: any, res: Response, next: NextFunction) => {
-  const token = req.headers.authorization?.split(" ")[1];
-  if (!token) {
-    throw generateError("UnAuthorized User", 401);
-  }
   try {
+    const token = req.headers.authorization?.split(" ")[1];
+    if (!token) {
+      throw generateError("UnAuthorized User", 401);
+    }
     const decoded = jwt.verify(token, process.env.SECRET_KEY!) as {
       userId: string;
     };

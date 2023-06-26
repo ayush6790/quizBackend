@@ -24,6 +24,7 @@ const AnswerSchema: Schema<IAnswer> = new Schema<IAnswer>({
   answerType: {
     type: String,
     enum: ["image", "video", "text", "audio"],
+    default:"text"
   },
   isCorrect: {
     type: Boolean,
@@ -43,6 +44,7 @@ const QuestionSchema: Schema<IQuestion> = new Schema<IQuestion>(
       type: Schema.Types.ObjectId,
       required:true,
       index: true,
+      ref:'QuizCategory'
     },
     question: {
       type: String,
@@ -51,7 +53,7 @@ const QuestionSchema: Schema<IQuestion> = new Schema<IQuestion>(
     },
     questionType: {
       type: String,
-      enum: ["image,video,audio,text"],
+      enum: ["image","video","audio","text"],
       default: "text",
     },
     description: {
