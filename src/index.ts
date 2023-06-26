@@ -1,10 +1,11 @@
 import "./db/db";
 import dotenv from "dotenv";
-import express, { Request, Response, NextFunction } from 'express';
-import bodyParser from 'body-parser';
-import userRouting from "./routing/User";
-import errorMiddleware from "./model/config/errorHandler";
-import cors from 'cors';
+import express from "express";
+import bodyParser from "body-parser";
+import errorMiddleware from "./modules/config/errorHandler";
+import cors from "cors";
+import importRoutings from "./routing/routingIndex";
+// import './services/email/RegisterEmail/Templates/SendMail'
 
 const app = express();
 dotenv.config();
@@ -16,8 +17,8 @@ app.use(bodyParser.urlencoded({ extended: true })); // Parse URL-encoded bodies
 // Enable CORS for all routes and all origins
 app.use(cors());
 
-// Import routes
-app.use("/api/auth", userRouting);
+// import routing function
+importRoutings(app)
 
 // Apply the error handler middleware
 app.use(errorMiddleware);

@@ -9,7 +9,7 @@ export const handleErrorMessage = (message: string, data: any, statusCode: numbe
     });
   };
 
-export const generateError = (message : string, status : number) => {
+export const generateError = (message : any, status : number) => {
     const validationError : any = new Error(message);
     validationError['data'] = message
     validationError["statusCode"] = status
