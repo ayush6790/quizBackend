@@ -25,6 +25,7 @@ const createCategory = async (req: any, res: Response, next: NextFunction) => {
           userId: req.userId,
           title: req.body.title,
           description: req.body.description,
+          topics: req.body.topics,
         });
         const savedQuiz = await createdQuiz.save();
         if (savedQuiz) {
@@ -103,4 +104,82 @@ const CreateQuestion = async (req: any, res: Response, next: NextFunction) => {
   }
 };
 
-export { createCategory, getCategoryUserByAuthId, CreateQuestion };
+const getQuestionById = async (req: any, res: Response, next: NextFunction) => {
+  try {
+    const question = await Question.find();
+    if (question) {
+      res.status(200).send({
+        message: "get question successfully",
+        data: question,
+        statusCode: 200,
+        success: true,
+      });
+    } else {
+      throw generateError(`question does not exists`, 400);
+    }
+  } catch (err) {
+    next(err);
+  }
+};
+
+const deleteCategory = async (req: any, res: Response, next: NextFunction) => {
+  try {
+    const category = await QuizCategory.findById(req.params.categoryId);
+    if (category) {
+      if (category.userId == req.userId) {
+        const deletedCategory = await category.deleteOne();
+        res.status(200).send({
+          message: `${category.title} category has been deleted successfully`,
+          data: deletedCategory,
+          statusCode: 200,
+          success: true,
+        });
+      } else {
+        throw generateError(`cannot delete this category`, 403);
+      }
+    } else {
+      throw generateError(
+        `category does not exists or something went wrong`,
+        400
+      );
+    }
+  } catch (err) {
+    next(err);
+  }
+};
+
+
+const deleteQuestion = async (req: any, res: Response, next: NextFunction) => {
+  try {
+    const question = await Question.findById(req.params.questionId);
+    if (question) {
+      if (question.userId == req.userId) {
+        const deletedQuestion = await question.deleteOne();
+        res.status(200).send({
+          message: `question has been deleted successfully`,
+          data: deletedQuestion,
+          statusCode: 200,
+          success: true,
+        });
+      } else {
+        throw generateError(`cannot delete this question`, 403);
+      }
+    } else {
+      throw generateError(
+        `question does not exists or something went wrong`,
+        400
+      );
+    }
+  } catch (err) {
+    next(err);
+  }
+};
+
+export {
+  createCategory,
+  getCategoryUserByAuthId,
+  CreateQuestion,
+  deleteCategory,
+  deleteQuestion,
+  getQuestionById,
+};
